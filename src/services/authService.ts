@@ -5,8 +5,6 @@ import bcrypt from 'bcryptjs'
 
 export const getUserByEmail = async (email: string) => {
 	const userRepo = AppDataSource.getRepository(User)
-	console.log('a')
-
 	return (await userRepo.findOne({ where: { email } })) ?? undefined
 }
 

@@ -1,8 +1,7 @@
-import request from 'supertest'
-import app from '@/server'
-import AppDataSource from '@/config/database'
 import { User } from '@/models/User'
+import app from '@/server'
 import bcrypt from 'bcryptjs'
+import request from 'supertest'
 
 const mockUserRepo = {
 	findOne: jest.fn(),
