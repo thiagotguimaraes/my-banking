@@ -1,5 +1,5 @@
 import express from 'express'
-import { AppDataSource } from '@/config/database'
+import AppDataSource from '@/config/database'
 import authRoutes from '@/routes/authRoutes'
 import transactionRoutes from '@/routes/transactionRoutes'
 
@@ -14,3 +14,5 @@ AppDataSource.initialize()
 	.catch((err) => console.error('DB Connection Error:', err))
 
 app.listen(3000, () => console.log('Server running on port 3000'))
+
+export default app
