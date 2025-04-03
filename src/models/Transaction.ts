@@ -9,13 +9,13 @@ export class Transaction {
 	@ManyToOne(() => User)
 	user: User
 
-	@Column()
+	@Column({ type: 'varchar' })
 	type: 'deposit' | 'withdrawal' | 'transfer'
 
 	@Column('decimal', { precision: 10, scale: 2 })
 	amount: number
 
-	@Column()
+	@Column({ type: 'varchar' })
 	status: 'pending' | 'completed' | 'failed'
 
 	@CreateDateColumn()

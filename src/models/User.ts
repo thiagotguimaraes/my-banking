@@ -5,13 +5,13 @@ export class User {
 	@PrimaryGeneratedColumn('uuid')
 	id: string
 
-	@Column({ type: 'string', unique: true })
+	@Column({ type: 'varchar', unique: true, length: 255 })
 	email: string
 
-	@Column({ type: 'string' })
+	@Column({ type: 'varchar' }) // Use 'varchar' for strings
 	passwordHash: string
 
-	@Column({ type: 'string', default: 'user' }) // Roles: user, admin
+	@Column({ type: 'varchar', default: 'user' }) // Use 'varchar' for roles
 	role: string
 
 	@CreateDateColumn()

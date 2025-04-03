@@ -19,7 +19,7 @@ router.post(
 
 		if (existingUser) return res.status(400).json({ message: 'User already exists' })
 
-		const token = registerUser(email, password)
+		const token = await registerUser(email, password)
 
 		res.json({ token })
 	}
