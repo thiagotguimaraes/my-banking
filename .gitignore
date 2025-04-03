@@ -3,6 +3,9 @@
 # Build folder
 /dist
 
+# Logs folder
+/logs
+
 # dependencies
 /node_modules
 /.pnp

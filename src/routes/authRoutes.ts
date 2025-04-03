@@ -3,6 +3,7 @@ import { getUserByEmail, registerUser, validateCredentials } from '@/services/au
 import { generateToken } from '@/utils/jwtHelper'
 import { Router } from 'express'
 import { body, validationResult } from 'express-validator'
+import logger from '@/utils/logger' // Import logger
 
 const router = Router()
 
@@ -12,30 +13,49 @@ router.post(
 	[body('email').isEmail(), body('password').isLength({ min: 8 })],
 	async (req: AuthRequest, res: any) => {
 		const errors = validationResult(req)
-		if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() })
+		if (!errors.isEmpty()) {
+			logger.warn('Validation errors during registration', { errors: errors.array() }) // Log validation errors
+			return res.status(400).json({ errors: errors.array() })
+		}
 
 		const { email, password } = req.body
-		const existingUser = await getUserByEmail(email)
+		try {
+			const existingUser = await getUserByEmail(email)
 
-		if (existingUser) return res.status(400).json({ message: 'User already exists' })
+			if (existingUser) {
+				logger.warn('User already exists', { email }) // Log existing user
+				return res.status(400).json({ message: 'User already exists' })
+			}
 
-		const token = await registerUser(email, password)
-
-		res.json({ token })
+			const token = await registerUser(email, password)
+			logger.info('User registered successfully', { email }) // Log successful registration
+			res.json({ token })
+		} catch (error) {
+			logger.error('Error during user registration', { error }) // Log error
+			res.status(500).json({ message: 'Internal server error' })
+		}
 	}
 )
 
 // Login User
 router.post('/login', [body('email').isEmail(), body('password').notEmpty()], async (req: AuthRequest, res: any) => {
+	logger.info('Login endpoint hit') // Log request
 	const { email, password } = req.body
-	const user = await getUserByEmail(email)
+	try {
+		const user = await getUserByEmail(email)
 
-	if (!user || (await validateCredentials(password, user)))
-		return res.status(400).json({ message: 'Invalid credentials' })
+		if (!user || (await validateCredentials(password, user))) {
+			logger.warn('Invalid login credentials', { email }) // Log invalid credentials
+			return res.status(400).json({ message: 'Invalid credentials' })
+		}
 
-	const token = generateToken(user.id, user.role)
-
-	res.json({ token })
+		const token = generateToken(user.id, user.role)
+		logger.info('User logged in successfully', { email }) // Log successful login
+		res.json({ token })
+	} catch (error) {
+		logger.error('Error during user login', { error }) // Log error
+		res.status(500).json({ message: 'Internal server error' })
+	}
 })
 
 export default router
