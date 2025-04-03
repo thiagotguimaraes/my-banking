@@ -1,9 +1,9 @@
-import { AuthRequest } from '@/server/middlewares/authMiddleware'
-import { getUserByEmail, registerUser, validateCredentials } from '@/server/services/authService'
-import { generateToken } from '@/server/utils/jwtHelper'
+import { AuthRequest } from '@/middlewares/authMiddleware'
+import { getUserByEmail, registerUser, validateCredentials } from '@/services/authService'
+import { generateToken } from '@/utils/jwtHelper'
 import { Router } from 'express'
 import { body, validationResult } from 'express-validator'
-import logger from '@/server/utils/logger' // Import logger
+import logger from '@/utils/logger' // Import logger
 
 const router = Router()
 

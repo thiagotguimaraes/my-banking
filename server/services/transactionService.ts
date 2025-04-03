@@ -1,6 +1,6 @@
-import AppDataSource from '@/server/config/database'
-import { Transaction } from '@/server/models/Transaction'
-import { User } from '@/server/models/User'
+import AppDataSource from '@/config/database'
+import { Transaction } from '@/models/Transaction'
+import { User } from '@/models/User'
 
 export const deposit = async (userId: string, amount: number) => {
 	const transactionRepo = AppDataSource.getRepository(Transaction)

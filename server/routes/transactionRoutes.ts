@@ -1,6 +1,6 @@
-import { authMiddleware } from '@/server/middlewares/authMiddleware'
-import { TransactionRequest, transactionsMiddleware } from '@/server/middlewares/transactionsMiddleware'
-import logger from '@/server/utils/logger'
+import { authMiddleware } from '@/middlewares/authMiddleware'
+import { TransactionRequest, transactionsMiddleware } from '@/middlewares/transactionsMiddleware'
+import logger from '@/utils/logger'
 import { Response, Router } from 'express'
 // import { createTransactionEvent } from '@/services/transactionService'
 

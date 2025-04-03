@@ -1,6 +1,6 @@
-import AppDataSource from '@/server/config/database'
-import authRoutes from '@/server/routes/authRoutes'
-import transactionRoutes from '@/server/routes/transactionRoutes'
+import AppDataSource from '@/config/database'
+import authRoutes from '@/routes/authRoutes'
+import transactionRoutes from '@/routes/transactionRoutes'
 import express from 'express'
 import path, { dirname } from 'path'
 import { fileURLToPath } from 'url' // Added import

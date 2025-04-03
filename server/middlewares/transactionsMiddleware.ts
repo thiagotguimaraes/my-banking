@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
 import { AuthRequest } from './authMiddleware'
-import logger from '@/server/utils/logger' // Assuming a logger utility exists
+import logger from '@/utils/logger' // Assuming a logger utility exists
 
 export interface TransactionRequest extends AuthRequest {
 	body: { amount: number }

@@ -1,6 +1,6 @@
 import request from 'supertest'
-import app from '@/server'
-import { User } from '@/server/models/User'
+import app from '@/'
+import { User } from '@/models/User'
 import bcrypt from 'bcryptjs'
 
 const mockUserRepo = {

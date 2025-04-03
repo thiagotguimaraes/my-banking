@@ -1,6 +1,6 @@
-import AppDataSource from '@/server/config/database'
-import { User } from '@/server/models/User'
-import { generateToken } from '@/server/utils/jwtHelper'
+import AppDataSource from '@/config/database'
+import { User } from '@/models/User'
+import { generateToken } from '@/utils/jwtHelper'
 import bcrypt from 'bcryptjs'
 
 export const getUserByEmail = async (email: string): Promise<User | undefined> => {

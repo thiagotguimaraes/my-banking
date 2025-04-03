@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express'
-import { verifyToken } from '@/server/utils/jwtHelper'
-import logger from '@/server/utils/logger'
+import { verifyToken } from '@/utils/jwtHelper'
+import logger from '@/utils/logger'
 
 export interface AuthRequest extends Request {
 	user?: { userId: string; role: string }

@@ -1,5 +1,5 @@
-import { User } from '@/server/models/User'
-import app from '@/server'
+import { User } from '@/models/User'
+import app from '@/'
 import bcrypt from 'bcryptjs'
 import request from 'supertest'
 
