@@ -2,7 +2,7 @@
 	"type": "module",
 	"scripts": {
 		"start": "node dist/server.js",
-		"dev": "npx tsx watch src/server.ts",
+		"dev": "npx tsx watch src/server/index.ts",
 		"test": "jest --config jest.config.ts"
 	},
 	"dependencies": {
