@@ -25,7 +25,6 @@ export class Transaction {
 	@CreateDateColumn()
 	createdAt: Date
 }
-
 export type TransactionType = 'deposit' | 'withdrawal' | 'transfer' | 'payment'
 export type TransactionStatus = 'pending' | 'completed' | 'failed'
 

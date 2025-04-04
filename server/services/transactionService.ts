@@ -2,6 +2,7 @@ import AppDataSource from '@/config/database'
 import kafka from '@/config/kafka'
 import { Transaction, TransactionStatusEnum, TransactionType, TransactionTypeEnum } from '@/models/Transaction'
 import logger from '@/utils/logger'
+import { Between } from 'typeorm'
 
 const transactionRepo = AppDataSource.getRepository(Transaction)
 
@@ -39,11 +40,21 @@ const processTransaction = async (message: any) => {
 }
 
 export const consumeTransactions = async () => {
-	await kafka.consumer.subscribe({ topic: kafka.TopicsEnum.TRANSACTIONS, fromBeginning: true })
+	await kafka.consumer.subscribe({ topic: kafka.TopicsEnum.TRANSACTIONS })
 
 	await kafka.consumer.run({
-		eachMessage: async ({ message }) => {
-			await processTransaction(message)
+		autoCommit: true,
+		autoCommitInterval: 5000, // Commit offsets every 5 seconds
+		eachMessage: async ({ topic, partition, message }) => {
+			try {
+				await processTransaction(message)
+			} catch (error) {
+				if (error instanceof Error) {
+					logger.error(`Error processing message: ${error.message}`)
+				} else {
+					logger.error('Error processing message: Unknown error')
+				}
+			}
 		},
 	})
 }
@@ -57,4 +68,17 @@ export const getBalance = async (userId: any): Promise<number> => {
 		.getRawOne()
 
 	return result?.balance ?? 0
+}
+
+export async function getTransactionsByUserAndDateRange(
+	userId: string,
+	startDate: Date,
+	endDate: Date
+): Promise<Transaction[]> {
+	return transactionRepo.find({
+		where: {
+			userId: Number(userId),
+			createdAt: Between(startDate, endDate),
+		},
+	})
 }

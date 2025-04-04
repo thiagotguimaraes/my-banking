@@ -7,7 +7,7 @@ export interface AuthRequest extends Request {
 }
 
 export const authMiddleware = (req: AuthRequest, res: Response, next: NextFunction): void => {
-	logger.info(`Incoming request: ${req.method} ${req.url}`)
+	logger.info(`Incoming request: ${req.method} ${req.baseUrl}${req.url}`)
 
 	const token = req.header('Authorization')?.split(' ')[1]
 

@@ -1,4 +1,9 @@
-import { createTransactionEvent, getBalance, consumeTransactions } from '@/services/transactionService'
+import {
+	createTransactionEvent,
+	getBalance,
+	consumeTransactions,
+	getTransactionsByUserAndDateRange,
+} from '@/services/transactionService'
 import kafka from '@/config/kafka'
 import AppDataSource from '@/config/database'
 import { Transaction, TransactionStatusEnum, TransactionTypeEnum } from '@/models/Transaction'
@@ -20,6 +25,7 @@ jest.mock('@/config/database', () => ({
 	getRepository: jest.fn().mockReturnValue({
 		create: jest.fn(),
 		save: jest.fn(),
+		find: jest.fn(), // Mock the find method
 		createQueryBuilder: jest.fn().mockReturnValue({
 			select: jest.fn().mockReturnThis(),
 			where: jest.fn().mockReturnThis(),
@@ -95,12 +101,49 @@ describe('transactionService', () => {
 
 			expect(kafka.consumer.subscribe).toHaveBeenCalledWith({
 				topic: kafka.TopicsEnum.TRANSACTIONS,
-				fromBeginning: true,
 			})
 
 			expect(kafka.consumer.run).toHaveBeenCalledWith({
+				autoCommit: true,
+				autoCommitInterval: 5000,
 				eachMessage: expect.any(Function),
 			})
+		})
+	})
+
+	describe('getTransactionsByUserAndDateRange', () => {
+		it('should return transactions for a user within a date range', async () => {
+			const userId = '123'
+			const startDate = new Date('2023-01-01')
+			const endDate = new Date('2023-01-31')
+			const mockTransactions = [
+				{ id: 1, userId: 123, amount: 100, createdAt: new Date('2023-01-10') },
+				{ id: 2, userId: 123, amount: 200, createdAt: new Date('2023-01-20') },
+			]
+
+			AppDataSource.getRepository(Transaction).find.mockResolvedValue(mockTransactions)
+
+			const transactions = await getTransactionsByUserAndDateRange(userId, startDate, endDate)
+
+			expect(transactions).toEqual(mockTransactions)
+			expect(AppDataSource.getRepository(Transaction).find).toHaveBeenCalledWith({
+				where: {
+					userId: Number(userId),
+					createdAt: expect.any(Object), // Between condition
+				},
+			})
+		})
+
+		it('should return an empty array if no transactions are found', async () => {
+			const userId = '123'
+			const startDate = new Date('2023-01-01')
+			const endDate = new Date('2023-01-31')
+
+			AppDataSource.getRepository(Transaction).find.mockResolvedValue([])
+
+			const transactions = await getTransactionsByUserAndDateRange(userId, startDate, endDate)
+
+			expect(transactions).toEqual([])
 		})
 	})
 })
