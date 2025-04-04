@@ -31,7 +31,7 @@ router.post(
 			logger.info('User registered successfully', email) // Log successful registration
 			res.json({ token })
 		} catch (error) {
-			logger.error('Error during user registration', error) // Log error
+			logger.error('Error during user registration:', error) // Log error
 			res.status(500).json({ message: 'Internal server error' })
 		}
 	}

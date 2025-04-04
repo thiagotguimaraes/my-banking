@@ -1,20 +1,22 @@
+import AppDataSource from '@/config/database'
+import app from '@/index'
 import { User } from '@/models/User'
-import app from '@/'
 import bcrypt from 'bcryptjs'
 import request from 'supertest'
 
-const mockUserRepo = {
-	findOne: jest.fn(),
-	create: jest.fn(),
-	save: jest.fn(),
-	initialize: jest.fn(),
-}
-
 jest.mock('@/config/database', () => ({
-	initialize: async () => {
-		return await Promise.resolve(true)
-	},
-	getRepository: (type: User) => mockUserRepo,
+	initialize: jest.fn().mockResolvedValue(true),
+	getRepository: jest.fn().mockReturnValue({
+		findOne: jest.fn(),
+		create: jest.fn(),
+		save: jest.fn(),
+		createQueryBuilder: jest.fn().mockReturnValue({
+			select: jest.fn().mockReturnThis(),
+			where: jest.fn().mockReturnThis(),
+			andWhere: jest.fn().mockReturnThis(),
+			getRawOne: jest.fn(),
+		}),
+	}),
 }))
 
 let token: string = ''
@@ -25,9 +27,17 @@ describe('Authentication API', () => {
 	})
 
 	it('should register a new user', async () => {
-		mockUserRepo.findOne.mockResolvedValue(Promise.resolve(null)) // No existing user
-		mockUserRepo.create.mockReturnValue({ id: '1', email: 'testuser@example.com', role: 'user' })
-		mockUserRepo.save.mockResolvedValue({ id: '1', email: 'testuser@example.com', role: 'user' })
+		;(AppDataSource.getRepository(User).findOne as jest.Mock).mockResolvedValue(null) // No existing user
+		;(AppDataSource.getRepository(User).create as jest.Mock).mockImplementation(() => ({
+			id: '1',
+			email: 'testuser@example.com',
+			role: 'user',
+		}))
+		;(AppDataSource.getRepository(User).save as jest.Mock).mockResolvedValue({
+			id: '1',
+			email: 'testuser@example.com',
+			role: 'user',
+		})
 
 		const res = await request(app)
 			.post('/api/auth/register')
@@ -39,7 +49,10 @@ describe('Authentication API', () => {
 	})
 
 	it('should not register a user with existing email', async () => {
-		mockUserRepo.findOne.mockResolvedValue({ id: '1', email: 'testuser@example.com' }) // Existing user
+		;(AppDataSource.getRepository(User).findOne as jest.Mock).mockResolvedValue({
+			id: '1',
+			email: 'testuser@example.com',
+		}) // Existing user
 
 		const res = await request(app)
 			.post('/api/auth/register')
@@ -50,7 +63,7 @@ describe('Authentication API', () => {
 	})
 
 	it('should login an existing user', async () => {
-		mockUserRepo.findOne.mockResolvedValue({
+		;(AppDataSource.getRepository(User).findOne as jest.Mock).mockResolvedValue({
 			id: '1',
 			email: 'testuser@example.com',
 			passwordHash: await bcrypt.hash('password123', 10),
@@ -65,7 +78,7 @@ describe('Authentication API', () => {
 	})
 
 	it('should reject login with invalid credentials', async () => {
-		mockUserRepo.findOne.mockResolvedValue({
+		;(AppDataSource.getRepository(User).findOne as jest.Mock).mockResolvedValue({
 			id: '1',
 			email: 'testuser@example.com',
 			passwordHash: await bcrypt.hash('password123', 10),
@@ -87,7 +100,7 @@ describe('Authentication API', () => {
 	})
 
 	it('should allow access to protected routes with token', async () => {
-		mockUserRepo.findOne.mockResolvedValue({
+		;(AppDataSource.getRepository(User).findOne as jest.Mock).mockResolvedValue({
 			id: '1',
 			email: 'testuser@example.com',
 			passwordHash: await bcrypt.hash('password123', 10),

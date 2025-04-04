@@ -19,8 +19,7 @@ const SERVER_PORT = process.env.SERVER_PORT || 3000
 const app = express()
 app.use(express.json())
 
-const __filename = fileURLToPath(import.meta.url)
-const __dirname = dirname(__filename)
+const __dirname = path.resolve()
 app.get('/', (req, res) => {
 	// Sending simple HTML file as response to '/' requests
 	res.sendFile(path.join(__dirname, './index.html'))

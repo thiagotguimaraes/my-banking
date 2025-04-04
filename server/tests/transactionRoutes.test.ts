@@ -1,32 +1,31 @@
 import request from 'supertest'
-import app from '@/'
+import app from '@/index'
 import { User } from '@/models/User'
 import bcrypt from 'bcryptjs'
-
-const mockUserRepo = {
-	findOne: jest.fn(),
-	create: jest.fn(),
-	save: jest.fn(),
-	initialize: jest.fn(),
-}
+import AppDataSource from '@/config/database'
 
 jest.mock('@/config/database', () => ({
-	initialize: async () => {
-		return await Promise.resolve(true)
-	},
-	getRepository: (type: User) => mockUserRepo,
+	initialize: jest.fn().mockResolvedValue(true),
+	getRepository: jest.fn().mockReturnValue({
+		findOne: jest.fn().mockResolvedValue({
+			id: '1',
+			email: 'testuser@example.com',
+			passwordHash: '$2b$10$vetXdhBVVeC/llAVs2awdOooPZJWIPW8dVXGgIHYKeqBydhwD/4ci',
+		}),
+		create: jest.fn(),
+		save: jest.fn(),
+		createQueryBuilder: jest.fn().mockReturnValue({
+			select: jest.fn().mockReturnThis(),
+			where: jest.fn().mockReturnThis(),
+			andWhere: jest.fn().mockReturnThis(),
+			getRawOne: jest.fn(),
+		}),
+	}),
 }))
 
 let token: string = ''
 
 beforeAll(async () => {
-	// Get authentication token
-	mockUserRepo.findOne.mockResolvedValue({
-		id: '1',
-		email: 'testuser@example.com',
-		passwordHash: await bcrypt.hash('password123', 10),
-	})
-
 	const res = await request(app)
 		.post('/api/auth/login')
 		.send({ email: 'testuser@example.com', password: 'password123' })
