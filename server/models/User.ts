@@ -2,8 +2,8 @@ import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeor
 
 @Entity()
 export class User {
-	@PrimaryGeneratedColumn('uuid')
-	id: string
+	@PrimaryGeneratedColumn()
+	id: number
 
 	@Column({ type: 'varchar', unique: true, length: 255 })
 	email: string

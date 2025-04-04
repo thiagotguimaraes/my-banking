@@ -1,35 +1,60 @@
 import AppDataSource from '@/config/database'
-import { Transaction } from '@/models/Transaction'
-import { User } from '@/models/User'
+import kafka from '@/config/kafka'
+import { Transaction, TransactionStatusEnum, TransactionType, TransactionTypeEnum } from '@/models/Transaction'
+import logger from '@/utils/logger'
 
-export const deposit = async (userId: string, amount: number) => {
-	const transactionRepo = AppDataSource.getRepository(Transaction)
-	if (amount <= 0) throw new Error('Invalid deposit amount')
+const transactionRepo = AppDataSource.getRepository(Transaction)
 
-	const transaction = transactionRepo.create({ user: { id: userId }, amount, type: 'deposit', status: 'pending' })
-	await transactionRepo.save(transaction)
+export const createTransactionEvent = async (userId: string, amount: number, type: TransactionType) => {
+	logger.info(`Transaction initiated: ${type} of $${amount} for userId ${userId}`)
 
-	// TODO: Integrate Kafka for transaction confirmation
-
-	transaction.status = 'completed'
-	await transactionRepo.save(transaction)
-	return transaction
+	await kafka.producer.send({
+		topic: kafka.TopicsEnum.TRANSACTIONS,
+		messages: [{ key: userId.toString(), value: JSON.stringify({ userId, amount, type }) }],
+	})
 }
 
-export const withdraw = async (userId: string, amount: number) => {
-	if (amount <= 0) throw new Error('Invalid withdrawal amount')
+const processTransaction = async (message: any) => {
+	logger.info(`Processing transaction: ${message.value.toString()}`)
 
-	const userRepo = AppDataSource.getRepository(User)
-	const user = await userRepo.findOne({ where: { id: userId } })
-	if (!user) throw new Error('User not found')
+	const { userId, amount, type } = JSON.parse(message.value.toString())
 
-	const transactionRepo = AppDataSource.getRepository(Transaction)
-	const transaction = transactionRepo.create({ user, amount, type: 'withdrawal', status: 'pending' })
+	const transaction = transactionRepo.create({ userId, amount, type, status: TransactionStatusEnum.PENDING })
 	await transactionRepo.save(transaction)
 
-	// TODO: Ensure sufficient balance before approving
+	if (type === TransactionTypeEnum.WITHDRAWAL) {
+		const balance = await getBalance(userId)
 
-	transaction.status = 'completed'
-	await transactionRepo.save(transaction)
-	return transaction
+		if (balance < amount) {
+			transaction.status = TransactionStatusEnum.FAILED
+		} else {
+			transaction.status = TransactionStatusEnum.COMPLETED
+		}
+	} else {
+		transaction.status = TransactionStatusEnum.COMPLETED
+	}
+
+	const savedTransaction = await transactionRepo.save(transaction)
+	logger.info(`Transaction processed: ${JSON.stringify(savedTransaction)}`)
+}
+
+export const consumeTransactions = async () => {
+	await kafka.consumer.subscribe({ topic: kafka.TopicsEnum.TRANSACTIONS, fromBeginning: true })
+
+	await kafka.consumer.run({
+		eachMessage: async ({ message }) => {
+			await processTransaction(message)
+		},
+	})
+}
+
+export const getBalance = async (userId: any): Promise<number> => {
+	const result = await transactionRepo
+		.createQueryBuilder('transaction')
+		.select('SUM(transaction.amount)', 'balance')
+		.where('transaction.userId = :userId', { userId })
+		.andWhere("transaction.type = 'deposit'")
+		.getRawOne()
+
+	return result?.balance ?? 0
 }

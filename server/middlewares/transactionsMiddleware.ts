@@ -9,8 +9,6 @@ export interface TransactionRequest extends AuthRequest {
 export const transactionsMiddleware = (req: TransactionRequest, res: Response, next: NextFunction): void => {
 	const { amount } = req.body
 
-	logger.info(`Transaction amount received: ${amount}`)
-
 	// Check if amount is provided
 	if (typeof amount !== 'number') {
 		logger.error('Invalid transaction amount type')
