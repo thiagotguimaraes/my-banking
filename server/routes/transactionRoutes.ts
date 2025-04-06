@@ -1,8 +1,11 @@
 import { authMiddleware } from '@/middlewares/authMiddleware'
 import { TransactionRequest, transactionsMiddleware } from '@/middlewares/transactionsMiddleware'
 import { TransactionType } from '@/models/Transaction'
-import { createTransactionEvent, getTransactionsByUserAndDateRange } from '@/services/transactionService'
-import logger from '@/utils/logger'
+import {
+	createTransactionEvent,
+	getTransactionsByUserAndDateRange,
+	getUserBalance,
+} from '@/services/transactionService'
 import { Response, Router } from 'express'
 
 const router = Router()
@@ -50,6 +53,22 @@ router.get('/all', authMiddleware, async (req: TransactionRequest, res: Response
 		res.json(transactions)
 	} catch (error) {
 		res.status(500).json({ message: 'Error fetching transactions', error })
+	}
+})
+
+// Get user balance
+router.get('/balance', authMiddleware, async (req: TransactionRequest, res: Response) => {
+	const userId = req.user?.userId
+	if (!userId) {
+		res.status(400).json({ message: 'User ID is required' })
+		return
+	}
+
+	try {
+		const balance = await getUserBalance(userId)
+		res.json({ balance })
+	} catch (error) {
+		res.status(500).json({ message: 'Error fetching balance', error })
 	}
 })
 

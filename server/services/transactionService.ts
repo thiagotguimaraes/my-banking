@@ -24,7 +24,7 @@ const processTransaction = async (message: any) => {
 	await transactionRepo.save(transaction)
 
 	if (type === TransactionTypeEnum.WITHDRAWAL) {
-		const balance = await getBalance(userId)
+		const balance = await getUserBalance(userId)
 
 		if (balance < amount) {
 			transaction.status = TransactionStatusEnum.FAILED
@@ -59,7 +59,7 @@ export const consumeTransactions = async () => {
 	})
 }
 
-export const getBalance = async (userId: any): Promise<number> => {
+export const getUserBalance = async (userId: any): Promise<number> => {
 	const result = await transactionRepo
 		.createQueryBuilder('transaction')
 		.select('SUM(transaction.amount)', 'balance')

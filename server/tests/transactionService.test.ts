@@ -1,6 +1,6 @@
 import {
 	createTransactionEvent,
-	getBalance,
+	getUserBalance,
 	consumeTransactions,
 	getTransactionsByUserAndDateRange,
 } from '@/services/transactionService'
@@ -25,7 +25,7 @@ jest.mock('@/config/database', () => ({
 	getRepository: jest.fn().mockReturnValue({
 		create: jest.fn(),
 		save: jest.fn(),
-		find: jest.fn(), // Mock the find method
+		find: jest.fn(),
 		createQueryBuilder: jest.fn().mockReturnValue({
 			select: jest.fn().mockReturnThis(),
 			where: jest.fn().mockReturnThis(),
@@ -65,9 +65,11 @@ describe('transactionService', () => {
 			const userId = '123'
 			const mockBalance = { balance: 500 }
 
-			AppDataSource.getRepository(Transaction).createQueryBuilder().getRawOne.mockResolvedValue(mockBalance)
+			AppDataSource.getRepository(Transaction).createQueryBuilder().getRawOne = jest
+				.fn()
+				.mockResolvedValue(mockBalance)
 
-			const balance = await getBalance(userId)
+			const balance = await getUserBalance(userId)
 
 			expect(balance).toBe(500)
 			expect(AppDataSource.getRepository(Transaction).createQueryBuilder).toHaveBeenCalledWith('transaction')
@@ -87,9 +89,9 @@ describe('transactionService', () => {
 		it('should return 0 if no balance is found', async () => {
 			const userId = '123'
 
-			AppDataSource.getRepository(Transaction).createQueryBuilder().getRawOne.mockResolvedValue(null)
+			AppDataSource.getRepository(Transaction).createQueryBuilder().getRawOne = jest.fn().mockResolvedValue(null)
 
-			const balance = await getBalance(userId)
+			const balance = await getUserBalance(userId)
 
 			expect(balance).toBe(0)
 		})
@@ -121,7 +123,7 @@ describe('transactionService', () => {
 				{ id: 2, userId: 123, amount: 200, createdAt: new Date('2023-01-20') },
 			]
 
-			AppDataSource.getRepository(Transaction).find.mockResolvedValue(mockTransactions)
+			AppDataSource.getRepository(Transaction).find = jest.fn().mockResolvedValue(mockTransactions)
 
 			const transactions = await getTransactionsByUserAndDateRange(userId, startDate, endDate)
 
@@ -139,7 +141,7 @@ describe('transactionService', () => {
 			const startDate = new Date('2023-01-01')
 			const endDate = new Date('2023-01-31')
 
-			AppDataSource.getRepository(Transaction).find.mockResolvedValue([])
+			AppDataSource.getRepository(Transaction).find = jest.fn().mockResolvedValue([])
 
 			const transactions = await getTransactionsByUserAndDateRange(userId, startDate, endDate)
 

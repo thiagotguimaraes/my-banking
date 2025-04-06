@@ -23,6 +23,12 @@ jest.mock('@/config/database', () => ({
 	}),
 }))
 
+jest.mock('@/services/transactionService', () => ({
+	createTransactionEvent: jest.fn(),
+	getUserBalance: jest.fn().mockResolvedValue(1000),
+	getTransactionsByUserAndDateRange: jest.fn().mockResolvedValue([]),
+}))
+
 let token: string = ''
 
 beforeAll(async () => {
@@ -62,5 +68,23 @@ describe('Transactions API', () => {
 
 		expect(res.status).toBe(400)
 		expect(res.body.message).toBe('Invalid amount')
+	})
+
+	it('should get all transactions for a user within a date range', async () => {
+		const res = await request(app)
+			.get('/api/transactions/all')
+			.set('Authorization', `Bearer ${token}`)
+			.query({ startDate: '2023-01-01', endDate: '2023-12-31' })
+
+		expect(res.status).toBe(200)
+		expect(Array.isArray(res.body)).toBe(true)
+		expect(res.body.length).toBeGreaterThanOrEqual(0)
+	})
+
+	it('should get user balance', async () => {
+		const res = await request(app).get('/api/transactions/balance').set('Authorization', `Bearer ${token}`)
+
+		expect(res.status).toBe(200)
+		expect(res.body.balance).toBeDefined()
 	})
 })
