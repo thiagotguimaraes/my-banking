@@ -1,5 +1,7 @@
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
 import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+import { TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const SignUpScreen = () => {
@@ -10,12 +12,12 @@ const SignUpScreen = () => {
 	const [showPassword, setShowPassword] = useState(false)
 
 	return (
-		<View style={styles.container}>
+		<ThemedView style={styles.container}>
 			<TouchableOpacity style={styles.backButton}>
 				<Icon name='arrow-left' size={24} color='#fff' />
 			</TouchableOpacity>
-			<Text style={styles.title}>Sign Up</Text>
-			<View style={styles.inputContainer}>
+			<ThemedText style={styles.title}>Sign Up</ThemedText>
+			<ThemedView style={styles.inputContainer}>
 				<Icon name='account-outline' size={20} color='#fff' style={styles.icon} />
 				<TextInput
 					style={styles.input}
@@ -24,8 +26,8 @@ const SignUpScreen = () => {
 					value={fullName}
 					onChangeText={setFullName}
 				/>
-			</View>
-			<View style={styles.inputContainer}>
+			</ThemedView>
+			<ThemedView style={styles.inputContainer}>
 				<Icon name='phone-outline' size={20} color='#fff' style={styles.icon} />
 				<TextInput
 					style={styles.input}
@@ -35,8 +37,8 @@ const SignUpScreen = () => {
 					onChangeText={setPhoneNumber}
 					keyboardType='phone-pad'
 				/>
-			</View>
-			<View style={styles.inputContainer}>
+			</ThemedView>
+			<ThemedView style={styles.inputContainer}>
 				<Icon name='email-outline' size={20} color='#fff' style={styles.icon} />
 				<TextInput
 					style={styles.input}
@@ -47,8 +49,8 @@ const SignUpScreen = () => {
 					keyboardType='email-address'
 					autoCapitalize='none'
 				/>
-			</View>
-			<View style={styles.inputContainer}>
+			</ThemedView>
+			<ThemedView style={styles.inputContainer}>
 				<Icon name='lock-outline' size={20} color='#fff' style={styles.icon} />
 				<TextInput
 					style={styles.input}
@@ -61,16 +63,16 @@ const SignUpScreen = () => {
 				<TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
 					<Icon name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color='#fff' />
 				</TouchableOpacity>
-			</View>
+			</ThemedView>
 			<TouchableOpacity style={styles.signUpButton}>
-				<Text style={styles.signUpButtonText}>Sign Up</Text>
+				<ThemedText style={styles.signUpButtonText}>Sign Up</ThemedText>
 			</TouchableOpacity>
 			<TouchableOpacity>
-				<Text style={styles.existingUserText}>
-					Already have an account. <Text style={styles.signInText}>Sign Up</Text>
-				</Text>
+				<ThemedText style={styles.existingUserText}>
+					Already have an account. <ThemedText style={styles.signInText}>Sign Up</ThemedText>
+				</ThemedText>
 			</TouchableOpacity>
-		</View>
+		</ThemedView>
 	)
 }
 

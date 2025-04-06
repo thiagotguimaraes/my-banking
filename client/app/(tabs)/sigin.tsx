@@ -1,5 +1,7 @@
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
 import React, { useState } from 'react'
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+import { TextInput, TouchableOpacity, StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const SignInScreen = () => {
@@ -8,12 +10,12 @@ const SignInScreen = () => {
 	const [showPassword, setShowPassword] = useState(false)
 
 	return (
-		<View style={styles.container}>
+		<ThemedView style={styles.container}>
 			<TouchableOpacity style={styles.backButton}>
 				<Icon name='arrow-left' size={24} color='#fff' />
 			</TouchableOpacity>
-			<Text style={styles.title}>Sign In</Text>
-			<View style={styles.inputContainer}>
+			<ThemedText style={styles.title}>Sign In</ThemedText>
+			<ThemedView style={styles.inputContainer}>
 				<Icon name='email-outline' size={20} color='#fff' style={styles.icon} />
 				<TextInput
 					style={styles.input}
@@ -24,8 +26,8 @@ const SignInScreen = () => {
 					keyboardType='email-address'
 					autoCapitalize='none'
 				/>
-			</View>
-			<View style={styles.inputContainer}>
+			</ThemedView>
+			<ThemedView style={styles.inputContainer}>
 				<Icon name='lock-outline' size={20} color='#fff' style={styles.icon} />
 				<TextInput
 					style={styles.input}
@@ -38,16 +40,16 @@ const SignInScreen = () => {
 				<TouchableOpacity onPress={() => setShowPassword(!showPassword)} style={styles.eyeIcon}>
 					<Icon name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color='#fff' />
 				</TouchableOpacity>
-			</View>
+			</ThemedView>
 			<TouchableOpacity style={styles.signInButton}>
-				<Text style={styles.signInButtonText}>Sign In</Text>
+				<ThemedText style={styles.signInButtonText}>Sign In</ThemedText>
 			</TouchableOpacity>
 			<TouchableOpacity>
-				<Text style={styles.newUserText}>
-					I’m a new user. <Text style={styles.signUpText}>Sign In</Text>
-				</Text>
+				<ThemedText style={styles.newUserText}>
+					I’m a new user. <ThemedText style={styles.signUpText}>Sign In</ThemedText>
+				</ThemedText>
 			</TouchableOpacity>
-		</View>
+		</ThemedView>
 	)
 }
 

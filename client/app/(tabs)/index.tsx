@@ -1,5 +1,7 @@
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native'
+import { TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const HomeScreen = () => {
@@ -11,107 +13,107 @@ const HomeScreen = () => {
 	]
 
 	const renderTransaction = ({ item }) => (
-		<View style={styles.transactionItem}>
+		<ThemedView style={styles.transactionItem}>
 			<Icon name={item.icon} size={24} color='#fff' style={styles.transactionIcon} />
-			<View style={styles.transactionDetails}>
-				<Text style={styles.transactionName}>{item.name}</Text>
-				<Text style={styles.transactionCategory}>{item.category}</Text>
-			</View>
-			<Text
+			<ThemedView style={styles.transactionDetails}>
+				<ThemedText style={styles.transactionName}>{item.name}</ThemedText>
+				<ThemedText style={styles.transactionCategory}>{item.category}</ThemedText>
+			</ThemedView>
+			<ThemedText
 				style={[
 					styles.transactionAmount,
 					item.amount.startsWith('-') ? styles.negativeAmount : styles.positiveAmount,
 				]}
 			>
 				{item.amount}
-			</Text>
-		</View>
+			</ThemedText>
+		</ThemedView>
 	)
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.header}>
-				<View style={styles.profileContainer}>
+		<ThemedView style={styles.container}>
+			<ThemedView style={styles.header}>
+				<ThemedView style={styles.profileContainer}>
 					<Icon name='account-circle' size={40} color='#fff' />
-					<View>
-						<Text style={styles.welcomeText}>Welcome back,</Text>
-						<Text style={styles.userName}>Tanya Myroniuk</Text>
-					</View>
-				</View>
+					<ThemedView>
+						<ThemedText style={styles.welcomeText}>Welcome back,</ThemedText>
+						<ThemedText style={styles.userName}>Tanya Myroniuk</ThemedText>
+					</ThemedView>
+				</ThemedView>
 				<TouchableOpacity>
 					<Icon name='magnify' size={24} color='#fff' />
 				</TouchableOpacity>
-			</View>
+			</ThemedView>
 
-			<View style={styles.cardContainer}>
-				<View style={styles.card}>
-					<Text style={styles.cardNumber}>4562 1122 4595 7852</Text>
-					<View style={styles.cardDetails}>
-						<View>
-							<Text style={styles.cardLabel}>AR Jonson</Text>
-							<Text style={styles.cardLabel}>Expiry Date</Text>
-							<Text style={styles.cardValue}>24/2000</Text>
-						</View>
-						<View>
-							<Text style={styles.cardLabel}>CVV</Text>
-							<Text style={styles.cardValue}>6986</Text>
-						</View>
-					</View>
-					<View style={styles.cardFooter}>
-						<Text style={styles.cardType}>Mastercard</Text>
+			<ThemedView style={styles.cardContainer}>
+				<ThemedView style={styles.card}>
+					<ThemedText style={styles.cardNumber}>4562 1122 4595 7852</ThemedText>
+					<ThemedView style={styles.cardDetails}>
+						<ThemedView>
+							<ThemedText style={styles.cardLabel}>AR Jonson</ThemedText>
+							<ThemedText style={styles.cardLabel}>Expiry Date</ThemedText>
+							<ThemedText style={styles.cardValue}>24/2000</ThemedText>
+						</ThemedView>
+						<ThemedView>
+							<ThemedText style={styles.cardLabel}>CVV</ThemedText>
+							<ThemedText style={styles.cardValue}>6986</ThemedText>
+						</ThemedView>
+					</ThemedView>
+					<ThemedView style={styles.cardFooter}>
+						<ThemedText style={styles.cardType}>Mastercard</ThemedText>
 						<Icon name='credit-card' size={24} color='#fff' />
-					</View>
-				</View>
-			</View>
+					</ThemedView>
+				</ThemedView>
+			</ThemedView>
 
-			<View style={styles.actionsContainer}>
+			<ThemedView style={styles.actionsContainer}>
 				<TouchableOpacity style={styles.actionButton}>
 					<Icon name='arrow-up' size={24} color='#fff' />
-					<Text style={styles.actionText}>Sent</Text>
+					<ThemedText style={styles.actionText}>Sent</ThemedText>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.actionButton}>
 					<Icon name='arrow-down' size={24} color='#fff' />
-					<Text style={styles.actionText}>Receive</Text>
+					<ThemedText style={styles.actionText}>Receive</ThemedText>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.actionButton}>
 					<Icon name='bank' size={24} color='#fff' />
-					<Text style={styles.actionText}>Loan</Text>
+					<ThemedText style={styles.actionText}>Loan</ThemedText>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.actionButton}>
 					<Icon name='plus-circle' size={24} color='#fff' />
-					<Text style={styles.actionText}>Topup</Text>
+					<ThemedText style={styles.actionText}>Topup</ThemedText>
 				</TouchableOpacity>
-			</View>
+			</ThemedView>
 
-			<View style={styles.transactionContainer}>
-				<View style={styles.transactionHeader}>
-					<Text style={styles.transactionTitle}>Transaction</Text>
+			<ThemedView style={styles.transactionContainer}>
+				<ThemedView style={styles.transactionHeader}>
+					<ThemedText style={styles.transactionTitle}>Transaction</ThemedText>
 					<TouchableOpacity>
-						<Text style={styles.sellAllText}>Sell All</Text>
+						<ThemedText style={styles.sellAllText}>Sell All</ThemedText>
 					</TouchableOpacity>
-				</View>
+				</ThemedView>
 				<FlatList data={transactions} renderItem={renderTransaction} keyExtractor={(item) => item.id} />
-			</View>
+			</ThemedView>
 
-			{/* <View style={styles.bottomNavigation}>
+			{/* <ThemedView style={styles.bottomNavigation}>
 				<TouchableOpacity>
 					<Icon name='home' size={24} color='#007BFF' />
-					<Text style={styles.navText}>Home</Text>
+					<ThemedText style={styles.navText}>Home</ThemedText>
 				</TouchableOpacity>
 				<TouchableOpacity>
 					<Icon name='credit-card' size={24} color='#fff' />
-					<Text style={styles.navText}>My Cards</Text>
+					<ThemedText style={styles.navText}>My Cards</ThemedText>
 				</TouchableOpacity>
 				<TouchableOpacity>
 					<Icon name='chart-bar' size={24} color='#fff' />
-					<Text style={styles.navText}>Statistics</Text>
+					<ThemedText style={styles.navText}>Statistics</ThemedText>
 				</TouchableOpacity>
 				<TouchableOpacity>
 					<Icon name='cog' size={24} color='#fff' />
-					<Text style={styles.navText}>Settings</Text>
+					<ThemedText style={styles.navText}>Settings</ThemedText>
 				</TouchableOpacity>
-			</View> */}
-		</View>
+			</ThemedView> */}
+		</ThemedView>
 	)
 }
 

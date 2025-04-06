@@ -1,91 +1,93 @@
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
 import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native'
+import { TouchableOpacity, StyleSheet, Image } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const ProfileScreen = () => {
 	return (
-		<View style={styles.container}>
-			<View style={styles.header}>
+		<ThemedView style={styles.container}>
+			<ThemedView style={styles.header}>
 				<TouchableOpacity>
 					<Icon name='arrow-left' size={24} color='#fff' />
 				</TouchableOpacity>
-				<Text style={styles.title}>Profile</Text>
+				<ThemedText style={styles.title}>Profile</ThemedText>
 				<TouchableOpacity>
 					<Icon name='account-edit' size={24} color='#fff' />
 				</TouchableOpacity>
-			</View>
+			</ThemedView>
 
-			<View style={styles.profileContainer}>
+			<ThemedView style={styles.profileContainer}>
 				<Image
 					source={{ uri: 'https://via.placeholder.com/80' }} // Replace with actual image URL
 					style={styles.profileImage}
 				/>
-				<View>
-					<Text style={styles.profileName}>Tanya Myroniuk</Text>
-					<Text style={styles.profileRole}>Senior Designer</Text>
-				</View>
-			</View>
+				<ThemedView>
+					<ThemedText style={styles.profileName}>Tanya Myroniuk</ThemedText>
+					<ThemedText style={styles.profileRole}>Senior Designer</ThemedText>
+				</ThemedView>
+			</ThemedView>
 
-			<View style={styles.menuContainer}>
+			<ThemedView style={styles.menuContainer}>
 				<TouchableOpacity style={styles.menuItem}>
-					<View style={styles.menuItemLeft}>
+					<ThemedView style={styles.menuItemLeft}>
 						<Icon name='account-outline' size={24} color='#fff' />
-						<Text style={styles.menuText}>Personal Information</Text>
-					</View>
+						<ThemedText style={styles.menuText}>Personal Information</ThemedText>
+					</ThemedView>
 					<Icon name='chevron-right' size={24} color='#aaa' />
 				</TouchableOpacity>
 
 				<TouchableOpacity style={styles.menuItem}>
-					<View style={styles.menuItemLeft}>
+					<ThemedView style={styles.menuItemLeft}>
 						<Icon name='credit-card-outline' size={24} color='#fff' />
-						<Text style={styles.menuText}>Payment Preferences</Text>
-					</View>
+						<ThemedText style={styles.menuText}>Payment Preferences</ThemedText>
+					</ThemedView>
 					<Icon name='chevron-right' size={24} color='#aaa' />
 				</TouchableOpacity>
 
 				<TouchableOpacity style={styles.menuItem}>
-					<View style={styles.menuItemLeft}>
+					<ThemedView style={styles.menuItemLeft}>
 						<Icon name='bank-outline' size={24} color='#fff' />
-						<Text style={styles.menuText}>Banks and Cards</Text>
-					</View>
+						<ThemedText style={styles.menuText}>Banks and Cards</ThemedText>
+					</ThemedView>
 					<Icon name='chevron-right' size={24} color='#aaa' />
 				</TouchableOpacity>
 
 				<TouchableOpacity style={styles.menuItem}>
-					<View style={styles.menuItemLeft}>
+					<ThemedView style={styles.menuItemLeft}>
 						<Icon name='bell-outline' size={24} color='#fff' />
-						<Text style={styles.menuText}>Notifications</Text>
-					</View>
-					<View style={styles.notificationBadge}>
-						<Text style={styles.notificationBadgeText}>2</Text>
-					</View>
+						<ThemedText style={styles.menuText}>Notifications</ThemedText>
+					</ThemedView>
+					<ThemedView style={styles.notificationBadge}>
+						<ThemedText style={styles.notificationBadgeText}>2</ThemedText>
+					</ThemedView>
 				</TouchableOpacity>
 
 				<TouchableOpacity style={styles.menuItem}>
-					<View style={styles.menuItemLeft}>
+					<ThemedView style={styles.menuItemLeft}>
 						<Icon name='message-outline' size={24} color='#fff' />
-						<Text style={styles.menuText}>Message Center</Text>
-					</View>
+						<ThemedText style={styles.menuText}>Message Center</ThemedText>
+					</ThemedView>
 					<Icon name='chevron-right' size={24} color='#aaa' />
 				</TouchableOpacity>
 
 				<TouchableOpacity style={styles.menuItem}>
-					<View style={styles.menuItemLeft}>
+					<ThemedView style={styles.menuItemLeft}>
 						<Icon name='map-marker-outline' size={24} color='#fff' />
-						<Text style={styles.menuText}>Address</Text>
-					</View>
+						<ThemedText style={styles.menuText}>Address</ThemedText>
+					</ThemedView>
 					<Icon name='chevron-right' size={24} color='#aaa' />
 				</TouchableOpacity>
 
 				<TouchableOpacity style={styles.menuItem}>
-					<View style={styles.menuItemLeft}>
+					<ThemedView style={styles.menuItemLeft}>
 						<Icon name='cog-outline' size={24} color='#fff' />
-						<Text style={styles.menuText}>Settings</Text>
-					</View>
+						<ThemedText style={styles.menuText}>Settings</ThemedText>
+					</ThemedView>
 					<Icon name='chevron-right' size={24} color='#aaa' />
 				</TouchableOpacity>
-			</View>
-		</View>
+			</ThemedView>
+		</ThemedView>
 	)
 }
 

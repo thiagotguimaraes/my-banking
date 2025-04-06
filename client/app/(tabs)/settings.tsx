@@ -1,5 +1,7 @@
+import { ThemedText } from '@/components/ThemedText'
+import { ThemedView } from '@/components/ThemedView'
 import React, { useState } from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, Switch } from 'react-native'
+import { TouchableOpacity, StyleSheet, Switch } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const SettingsScreen = () => {
@@ -10,76 +12,76 @@ const SettingsScreen = () => {
 	}
 
 	return (
-		<View style={styles.container}>
-			<View style={styles.header}>
+		<ThemedView style={styles.container}>
+			<ThemedView style={styles.header}>
 				<TouchableOpacity>
 					<Icon name='arrow-left' size={24} color='#fff' />
 				</TouchableOpacity>
-				<Text style={styles.title}>Settings</Text>
+				<ThemedText style={styles.title}>Settings</ThemedText>
 				<TouchableOpacity>
 					<Icon name='cog-outline' size={24} color='#fff' />
 				</TouchableOpacity>
-			</View>
+			</ThemedView>
 
-			<View style={styles.section}>
-				<Text style={styles.sectionTitle}>General</Text>
+			<ThemedView style={styles.section}>
+				<ThemedText style={styles.sectionTitle}>General</ThemedText>
 				<TouchableOpacity style={styles.row}>
-					<Text style={styles.rowText}>Language</Text>
-					<View style={styles.rowRight}>
-						<Text style={styles.rowValue}>English</Text>
+					<ThemedText style={styles.rowText}>Language</ThemedText>
+					<ThemedView style={styles.rowRight}>
+						<ThemedText style={styles.rowValue}>English</ThemedText>
 						<Icon name='chevron-right' size={24} color='#aaa' />
-					</View>
+					</ThemedView>
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.row}>
-					<Text style={styles.rowText}>My Profile</Text>
+					<ThemedText style={styles.rowText}>My Profile</ThemedText>
 					<Icon name='chevron-right' size={24} color='#aaa' />
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.row}>
-					<Text style={styles.rowText}>Contact Us</Text>
+					<ThemedText style={styles.rowText}>Contact Us</ThemedText>
 					<Icon name='chevron-right' size={24} color='#aaa' />
 				</TouchableOpacity>
-			</View>
+			</ThemedView>
 
-			<View style={styles.section}>
-				<Text style={styles.sectionTitle}>Security</Text>
+			<ThemedView style={styles.section}>
+				<ThemedText style={styles.sectionTitle}>Security</ThemedText>
 				<TouchableOpacity style={styles.row}>
-					<Text style={styles.rowText}>Change Password</Text>
+					<ThemedText style={styles.rowText}>Change Password</ThemedText>
 					<Icon name='chevron-right' size={24} color='#aaa' />
 				</TouchableOpacity>
 				<TouchableOpacity style={styles.row}>
-					<Text style={styles.rowText}>Privacy Policy</Text>
+					<ThemedText style={styles.rowText}>Privacy Policy</ThemedText>
 					<Icon name='chevron-right' size={24} color='#aaa' />
 				</TouchableOpacity>
-				<View style={styles.row}>
-					<Text style={styles.rowText}>Biometric</Text>
+				<ThemedView style={styles.row}>
+					<ThemedText style={styles.rowText}>Biometric</ThemedText>
 					<Switch
 						value={isBiometricEnabled}
 						onValueChange={toggleBiometric}
 						thumbColor={isBiometricEnabled ? '#007BFF' : '#aaa'}
 						trackColor={{ false: '#767577', true: '#1E90FF' }}
 					/>
-				</View>
-			</View>
+				</ThemedView>
+			</ThemedView>
 
-			{/* <View style={styles.bottomNavigation}>
+			{/* <ThemedView style={styles.bottomNavigation}>
 				<TouchableOpacity>
 					<Icon name='home' size={24} color='#aaa' />
-					<Text style={styles.navText}>Home</Text>
+					<ThemedText style={styles.navText}>Home</ThemedText>
 				</TouchableOpacity>
 				<TouchableOpacity>
 					<Icon name='credit-card' size={24} color='#aaa' />
-					<Text style={styles.navText}>My Cards</Text>
+					<ThemedText style={styles.navText}>My Cards</ThemedText>
 				</TouchableOpacity>
 				<TouchableOpacity>
 					<Icon name='chart-bar' size={24} color='#aaa' />
-					<Text style={styles.navText}>Statistics</Text>
+					<ThemedText style={styles.navText}>Statistics</ThemedText>
 				</TouchableOpacity>
 				<TouchableOpacity>
 					<Icon name='cog' size={24} color='#007BFF' />
-					<Text style={styles.navText}>Settings</Text>
+					<ThemedText style={styles.navText}>Settings</ThemedText>
 				</TouchableOpacity>
-			</View> */}
-		</View>
+			</ThemedView> */}
+		</ThemedView>
 	)
 }
 
