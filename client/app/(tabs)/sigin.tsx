@@ -1,13 +1,29 @@
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
+import { useAddLoginMutation } from '@/lib/api/authApi'
+import { selectAuth } from '@/lib/slices/authSlice'
+import { useAppSelector } from '@/lib/store/hooks'
 import React, { useState } from 'react'
-import { TextInput, TouchableOpacity, StyleSheet } from 'react-native'
+import { TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const SignInScreen = () => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
 	const [showPassword, setShowPassword] = useState(false)
+	const [loginAction, { isLoading: isLoadingLogin }] = useAddLoginMutation()
+	const auth = useAppSelector(selectAuth)
+
+	console.log('auth', auth)
+
+	const handleSubmit = async () => {
+		const session = await loginAction({ email, password }).unwrap()
+		// try {
+		// 	console.log('Login successful', session)
+		// } catch (error) {
+		// 	console.error('Login failed', error)
+		// }
+	}
 
 	return (
 		<ThemedView style={styles.container}>
@@ -41,7 +57,7 @@ const SignInScreen = () => {
 					<Icon name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color='#fff' />
 				</TouchableOpacity>
 			</ThemedView>
-			<TouchableOpacity style={styles.signInButton}>
+			<TouchableOpacity style={styles.signInButton} onPress={handleSubmit}>
 				<ThemedText style={styles.signInButtonText}>Sign In</ThemedText>
 			</TouchableOpacity>
 			<TouchableOpacity>
