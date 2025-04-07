@@ -1,14 +1,22 @@
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
+import { logoutAction } from '@/lib/slices/authSlice'
+import { useAppDispatch } from '@/lib/store/hooks'
 import React, { useState } from 'react'
 import { TouchableOpacity, StyleSheet, Switch } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const SettingsScreen = () => {
+	const dispatch = useAppDispatch()
 	const [isBiometricEnabled, setIsBiometricEnabled] = useState(false)
 
 	const toggleBiometric = () => {
 		setIsBiometricEnabled((previousState) => !previousState)
+	}
+
+	const handleLogout = () => {
+		// Dispatch the logout action
+		dispatch(logoutAction())
 	}
 
 	return (
@@ -61,6 +69,9 @@ const SettingsScreen = () => {
 						trackColor={{ false: '#767577', true: '#1E90FF' }}
 					/>
 				</ThemedView>
+				<TouchableOpacity style={styles.row} onPress={handleLogout}>
+					<ThemedText style={styles.rowText}>Logout</ThemedText>
+				</TouchableOpacity>
 			</ThemedView>
 
 			{/* <ThemedView style={styles.bottomNavigation}>

@@ -22,6 +22,23 @@ const setAuthToken = async (data: AuthResponse) => {
 	}
 }
 
+export const deleteAuthToken = async () => {
+	try {
+		// Remove the token based on the platform
+		if (Platform.OS === 'web') {
+			// Use localStorage for web
+			localStorage.removeItem('authToken')
+		} else {
+			// Use SecureStore for native platforms
+			await SecureStore.deleteItemAsync('authToken')
+		}
+		console.log('Token removed from SecureStore.')
+	} catch (error) {
+		// Handle errors (e.g., log them)
+		console.error('Failed to remove token:', error)
+	}
+}
+
 export const authApi = createApi({
 	reducerPath: 'authApi',
 	baseQuery,

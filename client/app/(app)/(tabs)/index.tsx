@@ -40,9 +40,9 @@ const HomeScreen = () => {
 						<ThemedText style={styles.userName}>Tanya Myroniuk</ThemedText>
 					</ThemedView>
 				</ThemedView>
-				<TouchableOpacity>
+				{/* <TouchableOpacity>
 					<Icon name='magnify' size={24} color='#fff' />
-				</TouchableOpacity>
+				</TouchableOpacity> */}
 			</ThemedView>
 
 			<ThemedView style={styles.cardContainer}>

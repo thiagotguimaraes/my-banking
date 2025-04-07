@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { authApi } from '../api/authApi'
 import { UserData } from '@shared/types'
-import { RootState } from '../store/store'
+import { authApi, deleteAuthToken } from '../api/authApi'
+import { AppDispatch, RootState } from '../store/store'
 
 interface AuthState {
 	user: UserData | null | undefined
@@ -21,6 +21,7 @@ const authSlice = createSlice({
 			return {
 				...state,
 				user: null,
+				sessionLoading: false,
 			}
 		},
 	},
@@ -50,6 +51,11 @@ const authSlice = createSlice({
 		})
 	},
 })
+
+export const logoutAction = () => async (dispatch: AppDispatch) => {
+	await deleteAuthToken()
+	dispatch(logout())
+}
 
 export const selectAuth = (state: RootState) => state.auth
 
