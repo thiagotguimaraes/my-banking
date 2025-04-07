@@ -1,12 +1,13 @@
-import {
-	createTransactionEvent,
-	getUserBalance,
-	consumeTransactions,
-	getTransactionsByUserAndDateRange,
-} from '@/services/transactionService'
-import kafka from '@/config/kafka'
 import AppDataSource from '@/config/database'
-import { Transaction, TransactionStatusEnum, TransactionTypeEnum } from '@/models/Transaction'
+import kafka from '@/config/kafka'
+import { Transaction } from '@/models/Transaction'
+import {
+	consumeTransactions,
+	createTransactionEvent,
+	getTransactionsByUserAndDateRange,
+	getUserBalance,
+} from '@/services/transactionService'
+import { TransactionTypeEnum } from '@/models/Transaction'
 
 jest.mock('@/config/kafka', () => ({
 	producer: {

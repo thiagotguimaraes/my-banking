@@ -1,8 +1,9 @@
 import AppDataSource from '@/config/database'
 import kafka from '@/config/kafka'
-import { Transaction, TransactionStatusEnum, TransactionType, TransactionTypeEnum } from '@/models/Transaction'
+import { Transaction, TransactionStatusEnum, TransactionTypeEnum } from '@/models/Transaction'
 import logger from '@/utils/logger'
 import { Between } from 'typeorm'
+import { TransactionType } from '@shared/types'
 
 const transactionRepo = AppDataSource.getRepository(Transaction)
 

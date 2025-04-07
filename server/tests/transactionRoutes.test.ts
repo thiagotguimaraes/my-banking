@@ -1,8 +1,5 @@
-import request from 'supertest'
 import app from '@/index'
-import { User } from '@/models/User'
-import bcrypt from 'bcryptjs'
-import AppDataSource from '@/config/database'
+import request from 'supertest'
 
 jest.mock('@/config/database', () => ({
 	initialize: jest.fn().mockResolvedValue(true),

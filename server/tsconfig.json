@@ -19,7 +19,8 @@
     "strictPropertyInitialization": false,
     "baseUrl": "./",
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "@shared/*": ["../shared/*"]
     },
     "outDir": "./dist"
   },

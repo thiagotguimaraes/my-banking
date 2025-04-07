@@ -1,7 +1,8 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn } from 'typeorm'
+import { User as UserType } from '@shared/types'
 
 @Entity()
-export class User {
+export class User implements UserType {
 	@PrimaryGeneratedColumn()
 	id: number
 

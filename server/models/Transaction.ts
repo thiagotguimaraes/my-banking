@@ -1,8 +1,9 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, ManyToOne, JoinColumn } from 'typeorm'
 import { User } from './User'
+import { Transaction as TransactionType } from '@shared/types'
 
 @Entity()
-export class Transaction {
+export class Transaction implements TransactionType {
 	@PrimaryGeneratedColumn()
 	id: number
 
@@ -25,8 +26,6 @@ export class Transaction {
 	@CreateDateColumn()
 	createdAt: Date
 }
-export type TransactionType = 'deposit' | 'withdrawal' | 'transfer' | 'payment'
-export type TransactionStatus = 'pending' | 'completed' | 'failed'
 
 export enum TransactionTypeEnum {
 	DEPOSIT = 'deposit',

@@ -1,6 +1,6 @@
 import { authMiddleware } from '@/middlewares/authMiddleware'
 import { TransactionRequest, transactionsMiddleware } from '@/middlewares/transactionsMiddleware'
-import { TransactionType } from '@/models/Transaction'
+import { TransactionType } from '@shared/types'
 import {
 	createTransactionEvent,
 	getTransactionsByUserAndDateRange,

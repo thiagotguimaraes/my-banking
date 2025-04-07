@@ -58,4 +58,6 @@ router.post('/login', [body('email').isEmail(), body('password').notEmpty()], as
 	}
 })
 
+// TODO: Make logout
+
 export default router
