@@ -4,11 +4,13 @@ import { UserData } from '@shared/types'
 import { RootState } from '../store/store'
 
 interface AuthState {
-	user: UserData | null
+	user: UserData | null | undefined
+	sessionLoading: boolean | null | undefined
 }
 
 const initialState: AuthState = {
 	user: null,
+	sessionLoading: null,
 }
 
 const authSlice = createSlice({
@@ -29,12 +31,22 @@ const authSlice = createSlice({
 		})
 
 		// Listen for the getSession mutation's fulfilled action
+		builder.addMatcher(authApi.endpoints.getSession.matchPending, (state, action) => {
+			state.sessionLoading = true
+		})
 		builder.addMatcher(authApi.endpoints.getSession.matchFulfilled, (state, action) => {
-			if (action.payload.user) {
-				state.user = action.payload.user
-			} else {
-				state.user = initialState.user
-			}
+			let newState = { ...state }
+
+			if (action.payload.user) newState.user = action.payload.user
+			else newState.user = initialState.user
+
+			newState.sessionLoading = false
+
+			return newState
+		})
+		builder.addMatcher(authApi.endpoints.getSession.matchRejected, (state, action) => {
+			state.user = initialState.user
+			state.sessionLoading = false
 		})
 	},
 })

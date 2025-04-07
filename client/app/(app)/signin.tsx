@@ -1,11 +1,9 @@
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
 import { useAddLoginMutation } from '@/lib/api/authApi'
-import { selectAuth } from '@/lib/slices/authSlice'
-import { useAppSelector } from '@/lib/store/hooks'
 import { router } from 'expo-router'
 import React, { useState } from 'react'
-import { TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native'
+import { StyleSheet, TextInput, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const SignInScreen = () => {
@@ -13,18 +11,22 @@ const SignInScreen = () => {
 	const [password, setPassword] = useState('')
 	const [showPassword, setShowPassword] = useState(false)
 	const [loginAction, { isLoading: isLoadingLogin }] = useAddLoginMutation()
-	const auth = useAppSelector(selectAuth)
 
 	const handleSubmit = async () => {
-		const { user } = await loginAction({ email, password }).unwrap()
-		router.navigate('/')
+		let user = null
+		try {
+			const auth = await loginAction({ email, password }).unwrap()
+			user = auth?.user
+
+			if (user) router.navigate('/(app)/(tabs)') // Navigate to the index tab after successful login
+		} catch (error) {
+			console.error('Login error:', error)
+			alert('Login failed. Please check your credentials.')
+		}
 	}
 
 	return (
 		<ThemedView style={styles.container}>
-			<TouchableOpacity style={styles.backButton}>
-				<Icon name='arrow-left' size={24} color='#fff' />
-			</TouchableOpacity>
 			<ThemedText style={styles.title}>Sign In</ThemedText>
 			<ThemedView style={styles.inputContainer}>
 				<Icon name='email-outline' size={20} color='#fff' style={styles.icon} />

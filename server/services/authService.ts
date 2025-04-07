@@ -2,7 +2,7 @@ import AppDataSource from '@/config/database'
 import { User } from '@/models/User'
 import { generateToken } from '@/utils/jwtHelper'
 import logger from '@/utils/logger'
-import { UserData } from '@shared/types'
+import { AuthResponse, UserData } from '@shared/types'
 import bcrypt from 'bcryptjs'
 
 const userRepo = AppDataSource.getRepository(User)
@@ -12,23 +12,19 @@ export const getUserByEmail = async (email: string): Promise<User | undefined> =
 }
 
 export const getUserById = async (userId: any): Promise<UserData | undefined> => {
-	let user = (await userRepo.findOne({ where: { id: userId } })) ?? undefined
-
-	if (user) {
-		const { passwordHash, ...userWithoutPassword } = user
-		user = userWithoutPassword as User
-	}
-
-	return user as UserData
+	return removePasswordFromUser((await userRepo.findOne({ where: { id: userId } })) ?? undefined)
 }
 
-export const registerUser = async (email: string, password: string): Promise<string> => {
+export const registerUser = async (email: string, password: string): Promise<AuthResponse> => {
 	const hashedPassword = await encryptPassword(password)
 	const newUser = userRepo.create({ email, passwordHash: hashedPassword })
 
 	const savedNewUser = await userRepo.save(newUser)
-	return generateToken(savedNewUser.id, savedNewUser.role)
+	const token = generateToken(savedNewUser.id, savedNewUser.role)
+
+	return { user: removePasswordFromUser(savedNewUser), token }
 }
+
 export const encryptPassword = async (password: string) => {
 	return await bcrypt.hash(password, 10)
 }
@@ -50,4 +46,13 @@ export const createAdminUserIfNotExists = async () => {
 	}
 
 	logger.info('Admin user | user: admin | password: admin')
+}
+
+export const removePasswordFromUser = (user: User | undefined): UserData | undefined => {
+	if (!user) {
+		return undefined
+	}
+
+	const { passwordHash, ...userWithoutPassword } = user
+	return userWithoutPassword as UserData
 }

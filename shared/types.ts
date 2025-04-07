@@ -20,7 +20,7 @@ export interface UserData {
 
 export interface AuthResponse {
 	token: string
-	user: UserData
+	user: UserData | undefined
 }
 
 export interface Transaction {

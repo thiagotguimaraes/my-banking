@@ -1,8 +1,8 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
+import { AuthInput, AuthResponse } from '@shared/types'
 import * as SecureStore from 'expo-secure-store'
 import { Platform } from 'react-native'
 import { baseQuery } from './baseQueryApi'
-import { AuthInput, AuthResponse, UserData } from '@shared/types'
 
 const setAuthToken = async (data: AuthResponse) => {
 	try {

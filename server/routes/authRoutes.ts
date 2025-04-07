@@ -1,10 +1,15 @@
 import { authMiddleware, AuthRequest } from '@/middlewares/authMiddleware'
-import { getUserByEmail, getUserById, registerUser, validateCredentials } from '@/services/authService'
+import {
+	getUserByEmail,
+	getUserById,
+	registerUser,
+	removePasswordFromUser,
+	validateCredentials,
+} from '@/services/authService'
 import { generateToken } from '@/utils/jwtHelper'
+import logger from '@/utils/logger' // Import logger
 import { Router } from 'express'
 import { body, validationResult } from 'express-validator'
-import logger from '@/utils/logger' // Import logger
-import { User } from '@/models/User'
 
 const router = Router()
 
@@ -28,9 +33,10 @@ router.post(
 				return res.status(400).json({ message: 'User already exists' })
 			}
 
-			const token = await registerUser(email, password)
+			const { user, token } = await registerUser(email, password)
+
 			logger.info('User registered successfully', email) // Log successful registration
-			res.json({ token })
+			res.json({ user, token })
 		} catch (error) {
 			logger.error('Error during user registration:', error) // Log error
 			res.status(500).json({ message: 'Internal server error' })
@@ -51,8 +57,9 @@ router.post('/login', [body('email').isEmail(), body('password').notEmpty()], as
 		}
 
 		const token = generateToken(user.id, user.role)
+
 		logger.info('User logged in successfully', email) // Log successful login
-		res.json({ token })
+		res.json({ user: removePasswordFromUser(user), token })
 	} catch (error) {
 		logger.error('Error during user login', error) // Log error
 		res.status(500).json({ message: 'Internal server error' })
