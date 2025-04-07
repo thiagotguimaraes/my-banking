@@ -1,22 +1,13 @@
 import { createApi } from '@reduxjs/toolkit/query/react'
 import { baseQuery } from './baseQueryApi'
-
-export interface Transaction {
-	id: string
-	postId: string
-	name: string
-	email: string
-	body: string
-}
-
-type TransactionsResponse = Transaction[]
+import { Transaction } from '@shared/types'
 
 export const transactionsApi = createApi({
 	reducerPath: 'transactionsApi',
 	baseQuery,
 	tagTypes: ['Transactions', 'Balance'],
 	endpoints: (build) => ({
-		getTransactions: build.query<TransactionsResponse, void>({
+		getTransactions: build.query<Transaction[], void>({
 			query: () => '/transactions/all',
 			providesTags: (result) =>
 				result

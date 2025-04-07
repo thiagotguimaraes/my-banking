@@ -1,9 +1,26 @@
+export interface AuthInput {
+	email: string
+	password: string
+}
+
 export interface User {
 	id: number
 	email: string
 	passwordHash: string
 	role: string
 	createdAt: Date
+}
+
+export interface UserData {
+	id: number
+	email: string
+	role: string
+	createdAt: Date
+}
+
+export interface AuthResponse {
+	token: string
+	user: UserData
 }
 
 export interface Transaction {

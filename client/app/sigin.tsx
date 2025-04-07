@@ -3,6 +3,7 @@ import { ThemedView } from '@/components/ThemedView'
 import { useAddLoginMutation } from '@/lib/api/authApi'
 import { selectAuth } from '@/lib/slices/authSlice'
 import { useAppSelector } from '@/lib/store/hooks'
+import { router } from 'expo-router'
 import React, { useState } from 'react'
 import { TextInput, TouchableOpacity, StyleSheet, Button } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -14,15 +15,9 @@ const SignInScreen = () => {
 	const [loginAction, { isLoading: isLoadingLogin }] = useAddLoginMutation()
 	const auth = useAppSelector(selectAuth)
 
-	console.log('auth', auth)
-
 	const handleSubmit = async () => {
-		const session = await loginAction({ email, password }).unwrap()
-		// try {
-		// 	console.log('Login successful', session)
-		// } catch (error) {
-		// 	console.error('Login failed', error)
-		// }
+		const { user } = await loginAction({ email, password }).unwrap()
+		router.navigate('/')
 	}
 
 	return (
@@ -57,12 +52,12 @@ const SignInScreen = () => {
 					<Icon name={showPassword ? 'eye-off-outline' : 'eye-outline'} size={20} color='#fff' />
 				</TouchableOpacity>
 			</ThemedView>
-			<TouchableOpacity style={styles.signInButton} onPress={handleSubmit}>
+			<TouchableOpacity style={styles.signInButton} onPress={handleSubmit} disabled={isLoadingLogin}>
 				<ThemedText style={styles.signInButtonText}>Sign In</ThemedText>
 			</TouchableOpacity>
 			<TouchableOpacity>
 				<ThemedText style={styles.newUserText}>
-					I’m a new user. <ThemedText style={styles.signUpText}>Sign In</ThemedText>
+					I’m a new user. <ThemedText style={styles.signUpText}>Sign Up</ThemedText>
 				</ThemedText>
 			</TouchableOpacity>
 		</ThemedView>

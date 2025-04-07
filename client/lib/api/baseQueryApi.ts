@@ -2,7 +2,6 @@ import { fetchBaseQuery } from '@reduxjs/toolkit/query/react'
 import * as SecureStore from 'expo-secure-store'
 import { Platform } from 'react-native'
 
-// Create a base query with token handling
 export const baseQuery = fetchBaseQuery({
 	baseUrl: '/api', // Base URL for all requests
 	prepareHeaders: async (headers) => {

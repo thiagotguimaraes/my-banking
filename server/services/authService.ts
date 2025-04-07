@@ -2,6 +2,7 @@ import AppDataSource from '@/config/database'
 import { User } from '@/models/User'
 import { generateToken } from '@/utils/jwtHelper'
 import logger from '@/utils/logger'
+import { UserData } from '@shared/types'
 import bcrypt from 'bcryptjs'
 
 const userRepo = AppDataSource.getRepository(User)
@@ -10,8 +11,15 @@ export const getUserByEmail = async (email: string): Promise<User | undefined> =
 	return (await userRepo.findOne({ where: { email } })) ?? undefined
 }
 
-export const getUserById = async (userId: any) => {
-	return await userRepo.findOne({ where: { id: userId } })
+export const getUserById = async (userId: any): Promise<UserData | undefined> => {
+	let user = (await userRepo.findOne({ where: { id: userId } })) ?? undefined
+
+	if (user) {
+		const { passwordHash, ...userWithoutPassword } = user
+		user = userWithoutPassword as User
+	}
+
+	return user as UserData
 }
 
 export const registerUser = async (email: string, password: string): Promise<string> => {

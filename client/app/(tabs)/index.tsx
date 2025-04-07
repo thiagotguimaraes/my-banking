@@ -1,7 +1,7 @@
 import { ThemedText } from '@/components/ThemedText'
 import { ThemedView } from '@/components/ThemedView'
 import React from 'react'
-import { TouchableOpacity, StyleSheet, FlatList, Image } from 'react-native'
+import { FlatList, StyleSheet, TouchableOpacity } from 'react-native'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const HomeScreen = () => {

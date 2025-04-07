@@ -1,8 +1,10 @@
 import { createSlice } from '@reduxjs/toolkit'
 import { authApi } from '../api/authApi'
+import { UserData } from '@shared/types'
+import { RootState } from '../store/store'
 
 interface AuthState {
-	user: { id: string; email: string; token: string } | null
+	user: UserData | null
 }
 
 const initialState: AuthState = {
@@ -14,21 +16,30 @@ const authSlice = createSlice({
 	initialState,
 	reducers: {
 		logout(state) {
-			state.user = null
-		},
-		setUser(state, action) {
-			state.user = action.payload
+			return {
+				...state,
+				user: null,
+			}
 		},
 	},
 	extraReducers: (builder) => {
 		// Listen for the addLogin mutation's fulfilled action
 		builder.addMatcher(authApi.endpoints.addLogin.matchFulfilled, (state, action) => {
-			state.user = action.payload // Update the user in the state
+			state.user = action.payload.user
+		})
+
+		// Listen for the getSession mutation's fulfilled action
+		builder.addMatcher(authApi.endpoints.getSession.matchFulfilled, (state, action) => {
+			if (action.payload.user) {
+				state.user = action.payload.user
+			} else {
+				state.user = initialState.user
+			}
 		})
 	},
 })
 
-export const selectAuth = (state) => state.auth
+export const selectAuth = (state: RootState) => state.auth
 
-export const { logout, setUser } = authSlice.actions
+export const { logout } = authSlice.actions
 export default authSlice.reducer

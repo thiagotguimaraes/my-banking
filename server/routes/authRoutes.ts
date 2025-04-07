@@ -1,9 +1,10 @@
-import { AuthRequest } from '@/middlewares/authMiddleware'
-import { getUserByEmail, registerUser, validateCredentials } from '@/services/authService'
+import { authMiddleware, AuthRequest } from '@/middlewares/authMiddleware'
+import { getUserByEmail, getUserById, registerUser, validateCredentials } from '@/services/authService'
 import { generateToken } from '@/utils/jwtHelper'
 import { Router } from 'express'
 import { body, validationResult } from 'express-validator'
 import logger from '@/utils/logger' // Import logger
+import { User } from '@/models/User'
 
 const router = Router()
 
@@ -56,6 +57,20 @@ router.post('/login', [body('email').isEmail(), body('password').notEmpty()], as
 		logger.error('Error during user login', error) // Log error
 		res.status(500).json({ message: 'Internal server error' })
 	}
+})
+
+// Get User Session
+router.get('/session', authMiddleware, async (req: AuthRequest, res: any) => {
+	const userId = req.user?.userId
+	if (!userId) {
+		res.status(400).json({ message: 'User ID is required' })
+		return
+	}
+
+	logger.info(`Session check for userId: ${userId}`) // Log session check
+	const user = await getUserById(userId)
+
+	res.status(200).json({ user })
 })
 
 // TODO: Make logout
