@@ -4,10 +4,10 @@
 
 <!-- ![My Banking App UI](./assets/images/Home.png) -->
 <div style="display:flex; padding-bottom:20px">
-    <img src="./assets/images/Sign-In.png" alt="Home screen" style="padding-right:10px; max-width:200px"/>
-    <img src="./assets/images/Home.png" alt="Home screen" style="padding-right:10px; max-width:200px"/>
-    <img src="./assets/images/Statistics.png" alt="Home screen" style="padding-right:10px; max-width:200px"/>
-    <img src="./assets/images/Profile.png" alt="Home screen" style="padding-right:10px; max-width:200px"/>
+    <img src="./assets/images/Sign-In.png" alt="Home screen" width="200" style="padding-right:10px; max-width:200px"/>
+    <img src="./assets/images/Home.png" alt="Home screen" width="200" style="padding-right:10px; max-width:200px"/>
+    <img src="./assets/images/Statistics.png" alt="Home screen" width="200" style="padding-right:10px; max-width:200px"/>
+    <img src="./assets/images/Profile.png" alt="Home screen" width="200" style="padding-right:10px; max-width:200px"/>
 </div>
 
 **My Banking** is a full-stack banking application designed to provide users with a seamless and secure banking experience.
